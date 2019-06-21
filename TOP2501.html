@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="echarts.min.js"></script>
+    <script src="data.js"></script>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        html ,body{
+            width: 100%;
+            height: 100%;
+        }
+        .echarts{
+            width: 100%;
+            height: 100%;
+            background: #ccc;
+        }
+    </style>
+</head>
+<body>
+<div class="echarts">
+
+</div>
+<script>
+    window.onload=function () {
+        let main=document.querySelector('.echarts');
+        let myCharts=echarts.init(main);
+        let selected={}
+        let series=[]
+        categories.forEach(category=>{
+            let movies=data.filter(ele=>ele[4].includes(category));
+            if (category=='全部'){
+                selected[category]=true;
+            } else {
+                selected[category]=false;
+            }
+            let obj={
+                name:category,
+                data:category=='全部' ? data : movies,
+                type:'scatter',
+                label: {
+                    emphasis: {
+                        show: true,
+                        formatter: function (param) {
+                            return param.data[3];
+                        },
+                        position: 'top'
+                    }
+                },
+            };
+            // return obj;
+            series.push(obj);
+        })
+
+
+        let option={
+            backgroundColor:'#2c343c',
+            title: {
+                text: '豆瓣电影TOP250',
+                textStyle: {
+                    color: '#ccc'
+                }
+            },
+            legend:{
+                type: 'scroll',
+                data:categories,
+                left:150,
+                selected,
+                selectedMode:'single'
+            },
+            xAxis: {
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color:'#fff'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                }
+            },
+            yAxis: {
+                splitLine: {
+                    lineStyle: {
+                        type: 'dashed',
+                        color:'#fff'
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#fff'
+                    }
+                },
+                scale: true
+            },
+            series
+        }
+        myCharts.setOption(option);
+    }
+</script>
+</body>
+</html>
